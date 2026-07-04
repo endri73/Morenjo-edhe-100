@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gëzuar Ditëlindjen, Morenjo! 🎉</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-deep:#150826;
+    --bg-deep2:#2b0f4a;
+    --bg-deep3:#3d1361;
+    --accent-pink:#ff3d81;
+    --accent-gold:#ffcf4d;
+    --accent-cyan:#4deeff;
+    --accent-purple:#b48bfa;
+    --text-light:#fdf6ff;
+    --text-dim:#c9b8e0;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+
+  html{scroll-behavior:smooth;}
+
+  body{
+    background:linear-gradient(180deg,var(--bg-deep) 0%,var(--bg-deep2) 45%,var(--bg-deep3) 100%);
+    color:var(--text-light);
+    font-family:'Poppins',sans-serif;
+    overflow-x:hidden;
+    min-height:100vh;
+    position:relative;
+  }
+
+  #stars{
+    position:fixed;inset:0;z-index:0;pointer-events:none;
+  }
+  .star{
+    position:absolute;
+    width:2px;height:2px;
+    background:#fff;
+    border-radius:50%;
+    animation:twinkle 3s infinite ease-in-out;
+  }
+  @keyframes twinkle{
+    0%,100%{opacity:.15;transform:scale(1);}
+    50%{opacity:1;transform:scale(1.6);}
+  }
+
+  #confettiCanvas, #fireworksCanvas{
+    position:fixed;inset:0;
+    width:100%;height:100%;
+    pointer-events:none;
+    z-index:50;
+  }
+
+  .balloon{
+    position:fixed;
+    width:60px;height:78px;
+    border-radius:50% 50% 50% 50% / 60% 60% 40% 40%;
+    z-index:100 !important;
+    pointer-events:auto !important;
+    opacity:.9;
+    filter:drop-shadow(0 6px 10px rgba(0,0,0,.35));
+    cursor:pointer;
+    transition: transform 0.15s ease, opacity 0.15s ease;
+    will-change: bottom, transform;
+  }
+  .balloon::after{
+    content:'';
+    position:absolute;
+    bottom:-46px;left:50%;
+    width:1px;height:46px;
+    background:rgba(255,255,255,.35);
+    transform:translateX(-50%);
+  }
+  .balloon::before{
+    content:'';
+    position:absolute;
+    top:8px;left:14px;
+    width:14px;height:20px;
+    background:rgba(255,255,255,.35);
+    border-radius:50%;
+    filter:blur(1px);
+  }
+
+  .hero{
+    position:relative;
+    z-index:2;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:40px 20px;
+  }
+
+  .eyebrow{
+    font-family:'Fredoka',sans-serif;
+    letter-spacing:.35em;
+    text-transform:uppercase;
+    font-size:.75rem;
+    color:var(--accent-cyan);
+    opacity:0;
+    animation:fadeUp 1s ease forwards .2s;
+  }
+
+  .hero h1{
+    font-family:'Fredoka',sans-serif;
+    font-weight:700;
+    font-size:clamp(3rem,12vw,7.5rem);
+    line-height:.95;
+    margin:14px 0 6px;
+    background:linear-gradient(90deg,var(--accent-pink),var(--accent-gold) 45%,var(--accent-cyan) 90%);
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+    background-size:200% auto;
+    animation:fadeUp 1s ease forwards .4s, shimmer 6s linear infinite 1.4s;
+    opacity:0;
+    text-shadow:0 0 60px rgba(255,61,129,.25);
+  }
+
+  @keyframes shimmer{
+    0%{background-position:0% center;}
+    100%{background-position:200% center;}
+  }
+
+  .hero p.sub{
+    font-size:clamp(1rem,2.4vw,1.4rem);
+    color:var(--text-dim);
+    max-width:520px;
+    opacity:0;
+    animation:fadeUp 1s ease forwards .65s;
+  }
+
+  .hero .age-badge{
+    margin-top:26px;
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    padding:10px 22px;
+    border-radius:999px;
+    border:1px solid rgba(255,255,255,.15);
+    background:rgba(255,255,255,.05);
+    backdrop-filter:blur(6px);
+    font-size:.95rem;
+    color:var(--text-light);
+    opacity:0;
+    animation:fadeUp 1s ease forwards .85s;
+  }
+
+  @keyframes fadeUp{
+    from{opacity:0;transform:translateY(24px);}
+    to{opacity:1;transform:translateY(0);}
+  }
+
+  .cta-row{
+    display:flex;
+    gap:16px;
+    flex-wrap:wrap;
+    justify-content:center;
+    margin-top:34px;
+    opacity:0;
+    animation:fadeUp 1s ease forwards 1.05s;
+  }
+
+  .btn{
+    font-family:'Fredoka',sans-serif;
+    font-weight:600;
+    font-size:1rem;
+    padding:14px 30px;
+    border-radius:999px;
+    border:none;
+    cursor:pointer;
+    color:var(--bg-deep);
+    background:linear-gradient(90deg,var(--accent-gold),var(--accent-pink));
+    box-shadow:0 10px 30px -8px rgba(255,61,129,.6);
+    transition:transform .25s ease, box-shadow .25s ease;
+  }
+  .btn:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 16px 36px -8px rgba(255,61,129,.75);}
+  .btn.ghost{
+    background:transparent;
+    color:var(--text-light);
+    border:1px solid rgba(255,255,255,.3);
+    box-shadow:none;
+  }
+  .btn.ghost:hover{background:rgba(255,255,255,.08);}
+
+  .scroll-hint{
+    position:absolute;
+    bottom:26px;
+    font-size:.8rem;
+    color:var(--text-dim);
+    letter-spacing:.2em;
+    text-transform:uppercase;
+    opacity:0;
+    animation:fadeUp 1s ease forwards 1.3s, bob 2.4s ease-in-out infinite 2.3s;
+  }
+  @keyframes bob{
+    0%,100%{transform:translateY(0);}
+    50%{transform:translateY(6px);}
+  }
+
+  section{
+    position:relative;
+    z-index:2;
+    max-width:920px;
+    margin:0 auto;
+    padding:110px 24px;
+  }
+
+  .section-eyebrow{
+    font-family:'Fredoka',sans-serif;
+    letter-spacing:.3em;
+    text-transform:uppercase;
+    font-size:.72rem;
+    color:var(--accent-gold);
+    text-align:center;
+    margin-bottom:10px;
+  }
+
+  h2{
+    font-family:'Fredoka',sans-serif;
+    font-weight:600;
+    font-size:clamp(2rem,5vw,3rem);
+    text-align:center;
+    margin-bottom:16px;
+    color:var(--text-light);
+  }
+
+  .center-text{
+    text-align:center;
+    color:var(--text-dim);
+    max-width:560px;
+    margin:0 auto 50px;
+    font-size:1.05rem;
+  }
+
+  .cake-stage{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:36px;
+  }
+
+  .cake-wrap{
+    position:relative;
+    width:280px;
+    height:260px;
+  }
+
+  .plate{
+    position:absolute;
+    bottom:0;left:50%;
+    transform:translateX(-50%);
+    width:260px;height:18px;
+    background:linear-gradient(180deg,#e8d9ff,#b9a3e0);
+    border-radius:50%;
+    box-shadow:0 8px 24px rgba(0,0,0,.4);
+  }
+
+  .tier{
+    position:absolute;
+    left:50%;
+    transform:translateX(-50%);
+    border-radius:14px;
+    box-shadow:inset 0 -8px 14px rgba(0,0,0,.18), 0 10px 20px rgba(0,0,0,.3);
+  }
+  .tier1{width:230px;height:80px;bottom:16px;background:linear-gradient(180deg,#ff8fb3,#ff3d81);}
+  .tier2{width:180px;height:70px;bottom:88px;background:linear-gradient(180deg,#ffe08a,#ffcf4d);}
+  .tier3{width:130px;height:60px;bottom:150px;background:linear-gradient(180deg,#9ee8ff,#4deeff);}
+
+  .drip{
+    position:absolute;left:0;right:0;bottom:-6px;
+    height:16px;
+    background-repeat:repeat-x;
+    background-size:26px 16px;
+  }
+  .tier1 .drip{background-image:radial-gradient(circle at 50% 0, #ffe9f1 40%, transparent 41%);}
+
+  .candle-hit{
+    position:absolute;
+    bottom:190px;
+    width:44px;height:74px;
+    transform:translateX(-50%);
+    cursor:pointer;
+    display:flex;
+    align-items:flex-end;
+    justify-content:center;
+    z-index:6;
+  }
+  .candle{
+    position:relative;
+    width:8px;height:34px;
+    border-radius:3px;
+    transform-origin:bottom center;
+    transition:transform .15s ease;
+  }
+  .candle-hit:hover .candle{transform:scale(1.1);}
+  .candle .flame{
+    position:absolute;
+    top:-16px;left:50%;
+    transform:translateX(-50%);
+    width:11px;height:16px;
+    background:radial-gradient(circle,#fff6b0 0%, var(--accent-gold) 55%, var(--accent-pink) 100%);
+    border-radius:50% 50% 50% 50% / 65% 65% 35% 35%;
+    animation:flicker 1s ease-in-out infinite;
+    box-shadow:0 0 14px 4px rgba(255,207,77,.7);
+  }
+  .candle.out .flame{display:none;}
+  .candle.out{opacity:.55;}
+  @keyframes flicker{
+    0%,100%{transform:translateX(-50%) scale(1) rotate(-2deg);}
+    50%{transform:translateX(-50%) scale(.9) rotate(3deg);}
+  }
+  .candle-hit.c1{left:36%;}
+  .candle-hit.c2{left:48%;}
+  .candle-hit.c3{left:60%;}
+  .c1 .candle{background:#ff3d81;}
+  .c2 .candle{background:#4deeff;}
+  .c3 .candle{background:#ffcf4d;}
+
+  .cake-msg{
+    font-family:'Fredoka',sans-serif;
+    font-size:1.1rem;
+    color:var(--accent-gold);
+    min-height:28px;
+    text-align:center;
+  }
+
+  .msg-wall{
+    columns:2;
+    column-gap:20px;
+  }
+  @media(max-width:640px){.msg-wall{columns:1;}}
+  .msg{
+    break-inside:avoid;
+    margin-bottom:20px;
+    padding:20px;
+    border-radius:16px;
+    background:rgba(255,255,255,.045);
+    border:1px solid rgba(255,255,255,.08);
+    font-size:.95rem;
+    color:var(--text-dim);
+    position:relative;
+  }
+  .msg::before{
+    content:'❝';
+    color:var(--accent-pink);
+    font-size:1.4rem;
+    display:block;
+    margin-bottom:4px;
+  }
+
+  footer{
+    position:relative;z-index:2;
+    text-align:center;
+    padding:80px 24px 60px;
+    color:var(--text-dim);
+  }
+  footer .big{
+    font-family:'Fredoka',sans-serif;
+    font-size:clamp(1.6rem,4vw,2.2rem);
+    color:var(--text-light);
+    margin-bottom:10px;
+  }
+  .heart{color:var(--accent-pink);}
+
+  #musicToggle{
+    position:fixed;
+    top:20px;right:20px;
+    z-index:60;
+    width:52px;height:52px;
+    border-radius:50%;
+    border:1px solid rgba(255,255,255,.2);
+    background:rgba(20,8,38,.6);
+    backdrop-filter:blur(6px);
+    color:var(--text-light);
+    font-size:1.3rem;
+    cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    transition:transform .2s ease, background .2s ease;
+  }
+  #musicToggle:hover{transform:scale(1.08);background:rgba(255,61,129,.25);}
+
+  #scoreWrapper{
+    position:fixed;
+    top:20px;
+    left:20px;
+    z-index:60;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  #scoreBadge{
+    padding:10px 18px;
+    border-radius:999px;
+    border:1px solid rgba(255,255,255,.2);
+    background:rgba(20,8,38,.6);
+    backdrop-filter:blur(6px);
+    font-family:'Fredoka',sans-serif;
+    font-size:.9rem;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  #scoreBadge span{color:var(--accent-gold);font-weight:600;}
+  #resetScoreBtn{
+    width:36px;
+    height:36px;
+    border-radius:50%;
+    border:1px solid rgba(255,255,255,.2);
+    background:rgba(20,8,38,.6);
+    backdrop-filter:blur(6px);
+    color:var(--text-light);
+    font-size:.8rem;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:transform .2s ease, background .2s ease;
+  }
+  #resetScoreBtn:hover{transform:scale(1.1);background:rgba(255,61,129,.25);}
+
+  .countdown-grid{
+    display:flex;
+    gap:16px;
+    justify-content:center;
+    flex-wrap:wrap;
+  }
+  .countdown-cell{
+    min-width:88px;
+    padding:18px 10px;
+    border-radius:16px;
+    background:rgba(255,255,255,.05);
+    border:1px solid rgba(255,255,255,.1);
+    text-align:center;
+  }
+  .countdown-cell .num{
+    font-family:'Fredoka',sans-serif;
+    font-size:2rem;
+    font-weight:600;
+    color:var(--accent-cyan);
+    display:block;
+  }
+  .countdown-cell .lbl{
+    font-size:.72rem;
+    text-transform:uppercase;
+    letter-spacing:.15em;
+    color:var(--text-dim);
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:.01ms !important;animation-iteration-count:1 !important;}
+  }
+</style>
+</head>
+<body>
+
+<div id="stars"></div>
+<canvas id="confettiCanvas"></canvas>
+<canvas id="fireworksCanvas"></canvas>
+<button id="musicToggle" title="Muzikë">🔇</button>
+
+<div id="scoreWrapper">
+  <div id="scoreBadge">🎈 <span id="scoreVal">0</span> balona shpërthyer</div>
+  <button id="resetScoreBtn" title="Rivendos numrin">↺</button>
+</div>
+
+<audio id="bdaySong" loop preload="auto">
+  <source src="https://raw.githubusercontent.com/endri73/Noah-edhe-100/main/Music/HAPPYBirthdaySong.mp3" type="audio/mpeg">
+  <source src="https://github.com/endri73/Noah-edhe-100/raw/refs/heads/main/Music/HAPPYBirthdaySong.mp3" type="audio/mpeg">
+</audio>
+
+<section class="hero">
+  <div class="eyebrow">4 Korrik · Dita e Veçantë</div>
+  <h1>MORENJO</h1>
+  <p class="sub">Sot festojmë njeriun që e bën çdo ditë më të gëzuar. Gëzuar ditëlindjen! 🎂</p>
+  <div class="age-badge">✨ Edhe një vit më i mrekullueshëm po fillon</div>
+  <div class="cta-row">
+    <button class="btn" id="startPartyBtn">🎉 Fillo Festën</button>
+    <button class="btn ghost" onclick="document.getElementById('cake').scrollIntoView({behavior:'smooth'})">🎂 Shko te Torta</button>
+  </div>
+  <div class="scroll-hint">▾ zbrit poshtë</div>
+</section>
+
+<section id="cake">
+  <div class="section-eyebrow">Momenti Special</div>
+  <h2>Fryji Qirinjtë</h2>
+  <p class="center-text">Kliko mbi secilin qiri për ta shuar. Kur t'i shuash të tre, bëj një dëshirë! ✨</p>
+  <div class="cake-stage">
+    <div class="cake-wrap">
+      <div class="candle-hit c1"><div class="candle"><div class="flame"></div></div></div>
+      <div class="candle-hit c2"><div class="candle"><div class="flame"></div></div></div>
+      <div class="candle-hit c3"><div class="candle"><div class="flame"></div></div></div>
+      <div class="tier tier3"></div>
+      <div class="tier tier2"></div>
+      <div class="tier tier1"><div class="drip"></div></div>
+      <div class="plate"></div>
+    </div>
+    <div class="cake-msg" id="cakeMsg">🕯️🕯️🕯️ ende ndezur...</div>
+  </div>
+</section>
+
+<section>
+  <div class="section-eyebrow">Numërimi</div>
+  <h2>Deri Ditëlindjen Tjetër</h2>
+  <div class="countdown-grid">
+    <div class="countdown-cell"><span class="num" id="cdDays">0</span><span class="lbl">Ditë</span></div>
+    <div class="countdown-cell"><span class="num" id="cdHours">0</span><span class="lbl">Orë</span></div>
+    <div class="countdown-cell"><span class="num" id="cdMins">0</span><span class="lbl">Min</span></div>
+    <div class="countdown-cell"><span class="num" id="cdSecs">0</span><span class="lbl">Sek</span></div>
+  </div>
+</section>
+
+<section>
+  <div class="section-eyebrow">Zëra Dashurie</div>
+  <h2>Mesazhe Për Ty</h2>
+  <div class="msg-wall">
+    <div class="msg">Gëzuar ditëlindjen! Uroj që ky vit të të sjellë vetëm gëzime dhe suksese.</div>
+    <div class="msg">Je një dhuratë për të gjithë ata që të njohin. Gëzuar!</div>
+    <div class="msg">Shpresoj që sot të ndihesh e dashur ashtu siç e meriton çdo ditë.</div>
+    <div class="msg">Një vit tjetër, një kapitull i ri i mbushur me histori të bukura që presin të shkruhen.</div>
+    <div class="msg">Faleminderit që je pjesë e jetës sime. Gëzuar ditëlindjen, Morenjo! 🎈</div>
+    <div class="msg">Le të festojmë çdo moment të vogël dhe të madh që na sjell buzëqeshje.</div>
+  </div>
+</section>
+
+<footer>
+  <div class="big">Gëzuar Ditëlindjen, Morenjo! <span class="heart">💜</span></div>
+  <p>Uroj që ky vit i ri i jetës të jetë plot dashuri, qeshje dhe ëndrra të realizuara.</p>
+</footer>
+
+<script>
+/* ============================================================
+   1. DEKLARIMET GLOBALE
+   ============================================================ */
+const confettiCanvas = document.getElementById('confettiCanvas');
+const cctx = confettiCanvas.getContext('2d');
+const fireworksCanvas = document.getElementById('fireworksCanvas');
+const fctx = fireworksCanvas.getContext('2d');
+
+let confettiParticles = [];
+let fireworkParticles = [];
+let confettiRunning = false;
+let fireworksRunning = false;
+let fxCtx = null;
+let blownCount = 0;
+let musicPlaying = false;
+
+let balloons = [];
+let popScore = 0;
+const scoreVal = document.getElementById('scoreVal');
+const balloonColors = ['#ff3d81', '#ffcf4d', '#4deeff', '#b48bfa', '#ff8fb3'];
+
+/* ============================================================
+   2. FUNKSIONET E KANAVACAVE
+   ============================================================ */
+function resizeCanvases() {
+  confettiCanvas.width = window.innerWidth;
+  confettiCanvas.height = window.innerHeight;
+  fireworksCanvas.width = window.innerWidth;
+  fireworksCanvas.height = window.innerHeight;
+}
+
+function burstConfetti(x, y, count = 140) {
+  const originX = x ?? confettiCanvas.width / 2;
+  const originY = y ?? confettiCanvas.height * 0.15;
+  const colors = ['#ff3d81', '#ffcf4d', '#4deeff', '#b48bfa', '#ffffff'];
+  for (let i = 0; i < count; i++) {
+    confettiParticles.push({
+      x: originX, y: originY,
+      vx: (Math.random() - 0.5) * 14,
+      vy: Math.random() * -14 - 4,
+      g: 0.35 + Math.random() * 0.2,
+      size: 5 + Math.random() * 5,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      rot: Math.random() * 360,
+      vr: (Math.random() - 0.5) * 12,
+      life: 0,
+      maxLife: 140 + Math.random() * 60,
+      shape: Math.random() > 0.5 ? 'rect' : 'circle'
+    });
+  }
+  if (!confettiRunning) animateConfetti();
+}
+
+function animateConfetti() {
+  confettiRunning = true;
+  cctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+  confettiParticles.forEach(p => {
+    p.vy += p.g * 0.15;
+    p.x += p.vx;
+    p.y += p.vy;
+    p.rot += p.vr;
+    p.life++;
+    cctx.save();
+    cctx.translate(p.x, p.y);
+    cctx.rotate(p.rot * Math.PI / 180);
+    cctx.fillStyle = p.color;
+    cctx.globalAlpha = Math.max(0, 1 - p.life / p.maxLife);
+    if (p.shape === 'rect') {
+      cctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.6);
+    } else {
+      cctx.beginPath();
+      cctx.arc(0, 0, p.size / 2, 0, Math.PI * 2);
+      cctx.fill();
+    }
+    cctx.restore();
+  });
+  confettiParticles = confettiParticles.filter(p => p.life < p.maxLife && p.y < confettiCanvas.height + 40);
+  if (confettiParticles.length > 0) {
+    requestAnimationFrame(animateConfetti);
+  } else {
+    confettiRunning = false;
+    cctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+  }
+}
+
+function launchFirework(x, y) {
+  const colors = ['#ff3d81', '#ffcf4d', '#4deeff', '#b48bfa', '#ffffff', '#ff8fb3'];
+  const color = colors[Math.floor(Math.random() * colors.length)];
+  const count = 46;
+  for (let i = 0; i < count; i++) {
+    const angle = (Math.PI * 2 * i) / count;
+    const speed = 2.5 + Math.random() * 2.5;
+    fireworkParticles.push({
+      x, y,
+      vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed,
+      color, life: 0, maxLife: 70 + Math.random() * 20,
+      size: 2.5 + Math.random() * 1.5
+    });
+  }
+  if (!fireworksRunning) animateFireworks();
+}
+
+function animateFireworks() {
+  fireworksRunning = true;
+  fctx.clearRect(0, 0, fireworksCanvas.width, fireworksCanvas.height);
+  fireworkParticles.forEach(p => {
+    p.vy += 0.045;
+    p.x += p.vx;
+    p.y += p.vy;
+    p.life++;
+    fctx.globalAlpha = Math.max(0, 1 - p.life / p.maxLife);
+    fctx.fillStyle = p.color;
+    fctx.beginPath();
+    fctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+    fctx.fill();
+  });
+  fctx.globalAlpha = 1;
+  fireworkParticles = fireworkParticles.filter(p => p.life < p.maxLife);
+  if (fireworkParticles.length > 0) {
+    requestAnimationFrame(animateFireworks);
+  } else {
+    fireworksRunning = false;
+    fctx.clearRect(0, 0, fireworksCanvas.width, fireworksCanvas.height);
+  }
+}
+
+function fireworksShow() {
+  let n = 0;
+  const iv = setInterval(() => {
+    launchFirework(
+      Math.random() * fireworksCanvas.width * 0.8 + fireworksCanvas.width * 0.1,
+      Math.random() * fireworksCanvas.height * 0.5 + 40
+    );
+    n++;
+    if (n >= 6) clearInterval(iv);
+  }, 350);
+}
+
+function playTone(freq, duration) {
+  try {
+    if (!fxCtx) fxCtx = new(window.AudioContext || window.webkitAudioContext)();
+    const osc = fxCtx.createOscillator();
+    const gain = fxCtx.createGain();
+    osc.type = 'sine';
+    osc.frequency.value = freq;
+    gain.gain.setValueAtTime(0.001, fxCtx.currentTime);
+    gain.gain.linearRampToValueAtTime(0.12, fxCtx.currentTime + 0.01);
+    gain.gain.exponentialRampToValueAtTime(0.001, fxCtx.currentTime + duration);
+    osc.connect(gain).connect(fxCtx.destination);
+    osc.start();
+    osc.stop(fxCtx.currentTime + duration + 0.05);
+  } catch (e) { /* nëse AudioContext nuk mbështetet */ }
+}
+
+/* ============================================================
+   3. BALONAT - LËVIZJE ME KOHË + PARALLAX SCROLL (SI FRIGORIFERI)
+   ============================================================ */
+function spawnBalloon() {
+  const el = document.createElement('div');
+  el.className = 'balloon';
+  
+  const baseLeft = Math.random() * 90;
+  el.style.left = baseLeft + 'vw';
+  
+  // Shpejtësia natyrale që balona ngjitet lart kur TI NUK bën scroll
+  const speed = 0.5 + Math.random() * 1.5; 
+  
+  // Sa shumë reagon balona ndaj scroll-it tënd
+  const scrollFactor = 0.8 + Math.random() * 1.2;
+  
+  const screenHeight = window.innerHeight;
+  // Pozicioni fillestar "fizik" në faqe
+  const startOffset = Math.random() * (screenHeight + 400);
+
+  // Sigurohu që balloonColors ekziston
+  const color = balloonColors[Math.floor(Math.random() * balloonColors.length)];
+  el.style.background = `radial-gradient(circle at 35% 30%, ${color}, rgba(0,0,0,.25))`;
+  
+  const scale = 0.7 + Math.random() * 0.6;
+  el.style.transform = `scale(${scale})`;
+  
+  let popped = false;
+
+  el.addEventListener('click', (e) => {
+    if (popped) return;
+    popped = true;
+    const rect = el.getBoundingClientRect();
+    burstConfetti(rect.left + rect.width / 2, rect.top + rect.height / 2, 26);
+    playTone(700 + Math.random() * 200, 0.12);
+    popScore++;
+    scoreVal.textContent = popScore;
+    localStorage.setItem('balloonScore', popScore);
+    el.style.transform = `scale(${scale * 1.6})`;
+    el.style.opacity = '0';
+    setTimeout(() => el.remove(), 160);
+  });
+
+  document.body.appendChild(el);
+
+  const balloonData = {
+    el: el,
+    scrollFactor: scrollFactor,
+    startOffset: startOffset,
+    floatOffset: 0, // Kjo do të rritet vetë çdo sekondë
+    speed: speed,
+    scale: scale,
+    lastCycle: 0,
+    popped: false
+  };
+  balloons.push(balloonData);
+}
+
+function updateBalloons() {
+  const currentScroll = window.scrollY || document.documentElement.scrollTop;
+  const screenHeight = window.innerHeight;
+  const totalRange = screenHeight + 400; 
+
+  for (let i = balloons.length - 1; i >= 0; i--) {
+    const b = balloons[i];
+    if (b.popped) {
+      balloons.splice(i, 1);
+      continue;
+    }
+
+    // 1. TULLUMBACJA FLUTURON (Lëvizja e saj vetiake pa u varur nga scroll)
+    b.floatOffset += b.speed;
+
+    // 2. EFEKTI FRIGORIFER (Bashkojmë pozicionin e saj me scroll-in tënd)
+    // Sa më shumë bën scroll poshtë, aq më shpejt ngjitet tullumbacja nga ekrani
+    let rawY = b.startOffset + b.floatOffset + (currentScroll * b.scrollFactor);
+
+    // 3. LOOP I PAFUNDËM (Kur del nga ekrani, shkon poshtë)
+    let wrappedY = rawY % totalRange;
+    if (wrappedY < 0) {
+      wrappedY += totalRange; 
+    }
+
+    let finalBottom = wrappedY - 200;
+
+    // 4. NDRYSHIMI I POZICIONIT VETËM KUR FSHEHET
+    let cycle = Math.floor(rawY / totalRange);
+    if (b.lastCycle !== cycle) {
+      b.lastCycle = cycle;
+      
+      // I ndryshojmë vendosjen horizontale dhe madhësinë vetëm kur balona rifillon nga poshtë
+      b.el.style.left = (Math.random() * 90) + 'vw';
+      const cycleScale = b.scale + (Math.sin(cycle) * 0.15);
+      b.el.style.transform = `scale(${Math.max(0.5, Math.min(cycleScale, 1.3))})`;
+    }
+
+    b.el.style.bottom = finalBottom + 'px';
+  }
+  
+  requestAnimationFrame(updateBalloons);
+}
+
+
+/* ============================================================
+   4. QIRINJTË E TORTËS
+   ============================================================ */
+const cakeMsg = document.getElementById('cakeMsg');
+const candleHits = document.querySelectorAll('.candle-hit');
+
+function blowCandle(hitEl) {
+  const flameEl = hitEl.querySelector('.candle');
+  if (flameEl.classList.contains('out')) return;
+  flameEl.classList.add('out');
+  blownCount++;
+  const rect = hitEl.getBoundingClientRect();
+  burstConfetti(rect.left + rect.width / 2, rect.top, 18);
+  playTone(520 - blownCount * 60, 0.15);
+  if (blownCount < 3) {
+    cakeMsg.textContent = blownCount + ' nga 3 qirinj u shuan...';
+  } else {
+    cakeMsg.textContent = '🎉 Dëshira u bë! Gëzuar Ditëlindjen, Morenjo! 🎉';
+    burstConfetti(window.innerWidth / 2, window.innerHeight * 0.3, 220);
+    fireworksShow();
+  }
+}
+
+candleHits.forEach(hit => {
+  hit.addEventListener('click', () => blowCandle(hit));
+  hit.addEventListener('touchstart', (e) => { e.preventDefault(); blowCandle(hit); }, { passive: false });
+});
+
+/* ============================================================
+   5. MUZIKA
+   ============================================================ */
+const musicBtn = document.getElementById('musicToggle');
+const bdaySong = document.getElementById('bdaySong');
+
+bdaySong.addEventListener('error', () => {
+  musicBtn.title = 'Kënga nuk u ngarkua dot';
+});
+
+musicBtn.addEventListener('click', () => {
+  musicPlaying = !musicPlaying;
+  if (musicPlaying) {
+    bdaySong.play().then(() => {
+      musicBtn.textContent = '🔊';
+    }).catch(() => {
+      musicPlaying = false;
+      musicBtn.textContent = '🔇';
+      musicBtn.title = 'Nuk u lejua luajtja automatike, provo sërish';
+    });
+  } else {
+    bdaySong.pause();
+    musicBtn.textContent = '🔇';
+  }
+});
+
+/* ============================================================
+   6. BUTONI "FILLO FESTËN"
+   ============================================================ */
+const startBtn = document.getElementById('startPartyBtn');
+startBtn.addEventListener('click', (e) => {
+  burstConfetti(window.innerWidth / 2, window.innerHeight * 0.2, 160);
+  if (!musicPlaying) {
+    bdaySong.play().then(() => {
+      musicPlaying = true;
+      musicBtn.textContent = '🔊';
+    }).catch(() => {});
+  }
+});
+
+/* ============================================================
+   7. SPARKLE CURSOR
+   ============================================================ */
+const sparkleCanvas = document.createElement('canvas');
+sparkleCanvas.style.cssText = 'position:fixed;inset:0;pointer-events:none;z-index:45;';
+document.body.appendChild(sparkleCanvas);
+const sctx = sparkleCanvas.getContext('2d');
+sparkleCanvas.width = window.innerWidth;
+sparkleCanvas.height = window.innerHeight;
+
+let sparkles = [];
+let lastSparkle = 0;
+
+window.addEventListener('pointermove', (e) => {
+  const now = Date.now();
+  if (now - lastSparkle < 40) return;
+  lastSparkle = now;
+  sparkles.push({
+    x: e.clientX, y: e.clientY,
+    size: 2 + Math.random() * 2.5,
+    life: 0,
+    maxLife: 40 + Math.random() * 20,
+    color: ['#ffcf4d', '#4deeff', '#ff3d81', '#ffffff'][Math.floor(Math.random() * 4)]
+  });
+});
+
+function animateSparkles() {
+  sctx.clearRect(0, 0, sparkleCanvas.width, sparkleCanvas.height);
+  sparkles.forEach(s => {
+    s.life++;
+    s.y -= 0.4;
+    sctx.globalAlpha = Math.max(0, 1 - s.life / s.maxLife);
+    const radius = Math.max(0, s.size * (1 - s.life / s.maxLife));
+    sctx.fillStyle = s.color;
+    sctx.beginPath();
+    sctx.arc(s.x, s.y, radius, 0, Math.PI * 2);
+    sctx.fill();
+  });
+  sctx.globalAlpha = 1;
+  sparkles = sparkles.filter(s => s.life < s.maxLife);
+  requestAnimationFrame(animateSparkles);
+}
+animateSparkles();
+
+/* ============================================================
+   8. KLIKO KUDO – FIREWORK
+   ============================================================ */
+document.addEventListener('click', (e) => {
+  const skip = e.target.closest('button, .candle-hit, .balloon, a');
+  if (skip) return;
+  launchFirework(e.clientX, e.clientY);
+});
+
+/* ============================================================
+   9. COUNTDOWN
+   ============================================================ */
+const cdDays = document.getElementById('cdDays');
+const cdHours = document.getElementById('cdHours');
+const cdMins = document.getElementById('cdMins');
+const cdSecs = document.getElementById('cdSecs');
+
+function nextBirthday() {
+  const now = new Date();
+  let year = now.getFullYear();
+  let target = new Date(year, 6, 4, 0, 0, 0);
+  if (target <= now) target = new Date(year + 1, 6, 4, 0, 0, 0);
+  return target;
+}
+
+function updateCountdown() {
+  const now = new Date();
+  const diff = nextBirthday() - now;
+  const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+  const m = Math.floor((diff / (1000 * 60)) % 60);
+  const s = Math.floor((diff / 1000) % 60);
+  cdDays.textContent = d;
+  cdHours.textContent = String(h).padStart(2, '0');
+  cdMins.textContent = String(m).padStart(2, '0');
+  cdSecs.textContent = String(s).padStart(2, '0');
+}
+
+/* ============================================================
+   10. RESET SCORE & LOCALSTORAGE
+   ============================================================ */
+function loadScore() {
+  const saved = localStorage.getItem('balloonScore');
+  if (saved !== null) {
+    popScore = parseInt(saved, 10) || 0;
+    scoreVal.textContent = popScore;
+  }
+}
+
+function resetScore() {
+  popScore = 0;
+  scoreVal.textContent = '0';
+  localStorage.setItem('balloonScore', '0');
+}
+
+document.getElementById('resetScoreBtn').addEventListener('click', resetScore);
+
+/* ============================================================
+   11. NGARKIMI I FAQES
+   ============================================================ */
+window.addEventListener('load', function() {
+  resizeCanvases();
+  loadScore();
+
+  setTimeout(() => burstConfetti(window.innerWidth / 2, window.innerHeight * 0.15, 90), 700);
+
+  // Krijo disa balona fillestare
+  for (let i = 0; i < 8; i++) {
+    setTimeout(spawnBalloon, i * 300);
+  }
+
+  // Vazhdo të shtojë balona të reja me ritëm të rregullt
+  setInterval(spawnBalloon, 1400);
+
+  // Fillo lëvizjen e balonave me riciklim
+  updateBalloons();
+
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+});
+
+/* ============================================================
+   12. RIMADHËSIMI I DRITARES
+   ============================================================ */
+window.addEventListener('resize', function() {
+  resizeCanvases();
+  sparkleCanvas.width = window.innerWidth;
+  sparkleCanvas.height = window.innerHeight;
+});
+</script>
+</body>
+</html>
